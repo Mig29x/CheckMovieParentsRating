@@ -1,3 +1,4 @@
+#todo conexion con RT
 import imdb
 import requests
 from bs4 import BeautifulSoup
