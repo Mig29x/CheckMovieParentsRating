@@ -7,9 +7,8 @@ def get_rt_rating(movie_name):
     soup = BeautifulSoup(response.text, 'html.parser')
 
     try:
-        rt_rating = soup.find('span', {'class': 'mop-ratings-wrap__percentage'}).text
+        rt_rating = soup.find('score-board', {'class': 'scoreboard'})['audiencescore']
     except:
         rt_rating = "No rating available."
     return rt_rating
-
 print(get_rt_rating("Back to the Future"))
