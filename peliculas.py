@@ -3,16 +3,16 @@ import imdb
 import requests
 from bs4 import BeautifulSoup
 
-def get_rotten_tomatoes_rating(movie):
-    movie_url = movie.get("url")
-    if movie_url:
-        response = requests.get(movie_url)
-        soup = BeautifulSoup(response.text, "html.parser")
-        rating = soup.find("span", class_="mop-ratings-wrap__percentage")
-        if rating:
-            return rating.text
-    return "No rating available."
+def get_rt_rating(movie_name):
+    url = f'https://www.rottentomatoes.com/m/{movie_name.lower().replace(" ","_")}'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
+    try:
+        rt_rating = soup.find('score-board', {'class': 'scoreboard'})['audiencescore']
+    except:
+        rt_rating = "No rating available."
+    return rt_rating
 ia = imdb.IMDb()
 
 def search_movie(title):
@@ -44,9 +44,13 @@ while True:
         choice = int(choice)
         if 1 <= choice <= len(movies):
             movie_id = movies[choice-1].movieID
+            selected_movie = movies[choice-1]
             show_parents_guide(movie_id)
+            print(get_rt_rating(selected_movie)) 
             break
         else:
             print("Invalid choice.")
     except ValueError:
         print("Invalid choice.")
+
+print(get_rt_rating(selected_movie))
