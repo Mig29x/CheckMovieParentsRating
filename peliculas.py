@@ -4,10 +4,10 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_rt_rating(movie_name):
-    url = f'https://www.rottentomatoes.com/m/{movie_name.lower().replace(" ","_")}'
+    print("RT Rating of "+movie_name["long imdb title"])
+    url = f'https://www.rottentomatoes.com/m/{movie_name["long imdb title"].replace(" ","_")}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-
     try:
         rt_rating = soup.find('score-board', {'class': 'scoreboard'})['audiencescore']
     except:
@@ -22,6 +22,7 @@ def search_movie(title):
     return movies
 
 def show_parents_guide(movie_id):
+    print("guide:")
     movie = ia.get_movie(movie_id)
     parents_guide = movie.get("certificates")
     if parents_guide:
@@ -53,4 +54,3 @@ while True:
     except ValueError:
         print("Invalid choice.")
 
-print(get_rt_rating(selected_movie))
