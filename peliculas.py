@@ -1,11 +1,16 @@
 #todo conexion con RT
 import imdb
 import requests
+import re
 from bs4 import BeautifulSoup
 
 def get_rt_rating(movie_name):
-    print("RT Rating of "+movie_name["long imdb title"])
-    url = f'https://www.rottentomatoes.com/m/{movie_name["long imdb title"].replace(" ","_")}'
+    pelicula = movie_name["long imdb title"]
+    new_name = re.sub(r"\(.*?\)", "", pelicula)
+    new_name = re.sub(r'"', '', new_name)
+    new_name = new_name.lower().strip()
+    print("RT Rating of "+new_name.replace(" ","_"))
+    url = f'https://www.rottentomatoes.com/m/{new_name.replace(" ","_")}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     try:
@@ -18,7 +23,7 @@ ia = imdb.IMDb()
 def search_movie(title):
     movies = ia.search_movie(title)
     for i, movie in enumerate(movies):
-        print(f"{i+1}. {movie}")
+        print(f"{i+1}. {movie['long imdb title']}")
     return movies
 
 def show_parents_guide(movie_id):
