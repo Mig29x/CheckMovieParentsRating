@@ -2,7 +2,7 @@ import feedparser
 import urllib.request
 from pydub import AudioSegment
 from pydub.utils import make_chunks
-import speech_recognition as sr
+import SpeechRecognition as sr
 
 # Carga el archivo MP3
 audio = AudioSegment.from_file("audio.mp3", format="mp3")
